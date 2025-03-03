@@ -10,8 +10,8 @@ number:
 date:
 consensus:
 v: 3
-area: "WIT"
-workgroup: "Media over QUIC"
+area: ""
+workgroup: "Media Over QUIC"
 keyword: AI inference, KVCache
 
 author:
