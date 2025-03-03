@@ -4,16 +4,14 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>TODO - Your title</title>
-<meta content="Your Name Here" name="author">
+<title>KVCache over MoQT</title>
+<meta content="Hang Shi" name="author">
 <meta content="
-       TODO Abstract 
+       Large language model (LLM) inference involves two stages: prefill and decode. The prefill phase processes the prompt in parallel, generating the KVCache, which is then used by the decode phase to produce tokens sequentially. KVCache can be reused if the model and prompt is the same, reducing computing cost of the prefill. However, its large size makes efficient transfer challenging. Delivering these over architectures enabled by publish/subscribe transport like MoQT, allows local nodes to cache the KVCache to be later retrieved via new subscriptions, saving the bandwidth. This document specifies the transmission of KVCache over MoQT. 
     " name="description">
 <meta content="xml2rfc 3.28.0" name="generator">
-<meta content="next generation" name="keyword">
-<meta content="unicorn" name="keyword">
-<meta content="sparkling distributed ledger" name="keyword">
-<meta content="draft-todo-yourname-protocol-latest" name="ietf.draft">
+<meta content="AI inference, KVCache" name="keyword">
+<meta content="draft-shi-moq-kvcache-00" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.28.0
     Python 3.12.9
@@ -29,7 +27,7 @@
     setuptools 70.3.0
     wcwidth 0.2.13
 -->
-<link href="draft-todo-yourname-protocol.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-shi-moq-kvcache.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@font-face {
   font-family: 'Lora';
@@ -1045,11 +1043,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">TODO - Abbreviation</td>
+<td class="center">KVCache</td>
 <td class="right">March 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Here</td>
+<td class="left">Shi</td>
 <td class="center">Expires 4 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
@@ -1058,9 +1056,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div id="internal-metadata" class="document-information">
 <dl id="identifiers">
 <dt class="label-workgroup">Workgroup:</dt>
-<dd class="workgroup">WG Working Group</dd>
+<dd class="workgroup">Media over QUIC</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-todo-yourname-protocol-latest</dd>
+<dd class="internet-draft">draft-shi-moq-kvcache-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
 <time datetime="2025-03-03" class="published">3 March 2025</time>
@@ -1072,31 +1070,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
-      <div class="author-name">Y. N. Here</div>
-<div class="org">Your Organization Here</div>
+      <div class="author-name">H. Shi</div>
+<div class="org">Huawei Technologies</div>
 </div>
 </dd>
 </dl>
 </div>
-<h1 id="title">TODO - Your title</h1>
+<h1 id="title">KVCache over MoQT</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">TODO Abstract<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-</section>
-<section class="note rfcEditorRemove" id="section-note.1">
-      <h2 id="name-about-this-document">
-<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
-      </h2>
-<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
-<p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://example.com/LATEST">https://example.com/LATEST</a></span>.
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-todo-yourname-protocol/">https://datatracker.ietf.org/doc/draft-todo-yourname-protocol/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
-<p id="section-note.1-3">
-        Discussion of this document takes place on the
-        WG Working Group mailing list (<span><a href="mailto:WG@example.com">mailto:WG@example.com</a></span>),
-        which is archived at <span><a href="https://example.com/WG">https://example.com/WG</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
-<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
-        <span><a href="https://github.com/USER/REPO">https://github.com/USER/REPO</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">Large language model (LLM) inference involves two stages: prefill and decode. The prefill phase processes the prompt in parallel, generating the KVCache, which is then used by the decode phase to produce tokens sequentially. KVCache can be reused if the model and prompt is the same, reducing computing cost of the prefill. However, its large size makes efficient transfer challenging. Delivering these over architectures enabled by publish/subscribe transport like MoQT, allows local nodes to cache the KVCache to be later retrieved via new subscriptions, saving the bandwidth. This document specifies the transmission of KVCache over MoQT.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1147,36 +1130,82 @@ svg :is([fill="white"], [fill^="#fff"]) {
         </h2>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction-kvcache-in-llm" class="internal xref">Introduction: KVCache in LLM inference</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-kvcache-data-model" class="internal xref">KVCache Data Model</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
 </section>
 </div>
-<div id="introduction">
+<div id="introduction-kvcache-in-llm-inference">
 <section id="section-1">
-      <h2 id="name-introduction">
-<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      <h2 id="name-introduction-kvcache-in-llm">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction-kvcache-in-llm" class="section-name selfRef">Introduction: KVCache in LLM inference</a>
       </h2>
-<p id="section-1-1">TODO Introduction<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">The inference process of large language models is typically divided into two distinct stages: prefill and decode. The prefill phase processes the input prompt in parallel, generating a KVCache, which serves as an essential input for the decode phase. The decode phase then utilizes the KVCache to generate output tokens sequentially, one at a time. Prefill is a computationally intensive process, whereas decoding is constrained by memory bandwidth. Due to their differing resource requirements, prefill and decode processes are often deployed on separate computing clusters using different hardware chips optimized for computational performance in prefill nodes and memory bandwidth efficiency in decode nodes, with KVCache transferred between them.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<span id="name-llm-inference-process"></span><div id="fig-kvcache">
+<figure id="figure-1">
+        <div class="alignLeft art-text artwork" id="section-1-2.1">
+<pre>
+               +--------------------+
+               |    Prompt Input    |
+               |  (System + User)   |
+               +--------------------+
+            Tokenization |
+                ---------------------
+                |                   |
+                v                   |
+    +--------------------+          |
+    |   Prefill Nodes    |          |
+    | (Generate KVCache) |          |
+    +--------------------+          |
+                |                   |
+                v                   |
+    +--------------------+          |
+    |      KVCache       |&lt;---------+
+    | (Stored &amp; Reused)  |
+    +--------------------+
+                |
+      -----------------------------
+      |              |            |
+      v              v            v
++----------------+       +----------------+
+|  Decode Node 1 |  ...  |  Decode Node N |
+| (Use KVCache)  |       | (Use KVCache)  |
++----------------+       +----------------+
+
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-llm-inference-process" class="selfRef">LLM inference process</a>
+        </figcaption></figure>
+</div>
+<p id="section-1-3">KVCache is significantly large, with a single token requiring 160KB for a 70B model(8bit quantization). For a prompt of 1000 tokens, the KVCache size reaches 160MB. To reduce the size of KVCache, various quantization and compression algorithm are proposed such as <span>[<a href="#CacheGen" class="cite xref">CacheGen</a>]</span>. Furthermore, KVCache can be reused across sessions if derived from the same prompt and model, as shown in <a href="#fig-kvcache" class="auto internal xref">Figure 1</a>. The most basic reuse strategy is prefix caching, where KVCache is shared among prompts with a common prefix. More advanced methods, such as <span>[<a href="#CacheBlend" class="cite xref">CacheBlend</a>]</span>, improve reuse efficiency by selectively reusing KVCache beyond prefix matching. To minimize transmission costs, a publish/subscribe architecture is required to distribute KVCache. This document defines how to send KVCache over MoQT<span>[<a href="#I-D.ietf-moq-transport" class="cite xref">I-D.ietf-moq-transport</a>]</span>.<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1188,60 +1217,164 @@ svg :is([fill="white"], [fill^="#fff"]) {
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
 appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">This document uses the following terms:<a href="#section-2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-3.1">
+          <p id="section-2-3.1.1">LLM: A large language model (LLM) that utilizes the attention mechanism to process and generate text efficiently by capturing long-range dependencies within input sequences.<a href="#section-2-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-3.2">
+          <p id="section-2-3.2.1">KVCache: A key-value cache storing intermediate representations used in LLM inference.<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-3.3">
+          <p id="section-2-3.3.1">Prompt: A prompt consists of two parts: the system prompt and the user prompt. The system prompt is predefined by the LLM model developer to guide the model's behavior, while the user prompt is provided dynamically by the user to specify the task or request.<a href="#section-2-3.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-3.4">
+          <p id="section-2-3.4.1">Token: The smallest unit of processing in LLM inference, typically representing a word or subword.<a href="#section-2-3.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="kvcache-data-model">
+<section id="section-3">
+      <h2 id="name-kvcache-data-model">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-kvcache-data-model" class="section-name selfRef">KVCache Data Model</a>
+      </h2>
+<p id="section-3-1">The KVCache data model is structured as follows.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2"><strong>Naming</strong>: The Track Namespace consisting of following tuples (moq://kvcache.moq.arpa/v1/),(modelName), (prompt) is defined in this specification. The track name identifies the compression level for the KVCache. Thus, a track name can be identified with the tuple (<code>&lt;compression&gt;</code>) and the full track name having the following format (when represented as a string):<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3"><code>
+moq://kvcache.moq.arpa/v1/&lt;modelName&gt;/&lt;compression&gt;
+</code><a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">Following compressions are defined in this specification, along with their size:<a href="#section-3-4" class="pilcrow">¶</a></p>
+<span id="name-compression-of-kvcache"></span><div id="tab-kvcache-compression">
+<table class="center" id="table-1">
+        <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-compression-of-kvcache" class="selfRef">Compression of KVCache</a>
+        </caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">Compression</th>
+            <th class="text-left" rowspan="1" colspan="1">Description</th>
+            <th class="text-left" rowspan="1" colspan="1">Size per Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">FP16</td>
+            <td class="text-left" rowspan="1" colspan="1">Quantized using FP16</td>
+            <td class="text-left" rowspan="1" colspan="1">2 bytes</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">BF16</td>
+            <td class="text-left" rowspan="1" colspan="1">Quantized using BF16</td>
+            <td class="text-left" rowspan="1" colspan="1">2 bytes</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">FP8</td>
+            <td class="text-left" rowspan="1" colspan="1">Quantized using FP8</td>
+            <td class="text-left" rowspan="1" colspan="1">1 byte</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Int8</td>
+            <td class="text-left" rowspan="1" colspan="1">Quantized using Int8</td>
+            <td class="text-left" rowspan="1" colspan="1">1 byte</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">FP4</td>
+            <td class="text-left" rowspan="1" colspan="1">Quantized using FP4</td>
+            <td class="text-left" rowspan="1" colspan="1">0.5 byte</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Int4</td>
+            <td class="text-left" rowspan="1" colspan="1">Quantized using Int4</td>
+            <td class="text-left" rowspan="1" colspan="1">0.5 byte</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">AC (5x)</td>
+            <td class="text-left" rowspan="1" colspan="1">Compressed using Arithmetic Coding (5x ratio)</td>
+            <td class="text-left" rowspan="1" colspan="1">Variable</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<p id="section-3-6"><strong>Group ID</strong>: Normally the tokens are split into chunks of uniform length(typical value is 128). The KVCache are organized into groups corresponding into token chunks. The ID of the group represents the index of a token group within the KVCache.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7"><strong>Object ID</strong>: An identifier for a specific token within a group.<a href="#section-3-7" class="pilcrow">¶</a></p>
+<p id="section-3-8"><strong>Object Payload</strong>: The content of the KVCache, which varies based on the compression algorithm used for storage and transmission.<a href="#section-3-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-3">
+<section id="section-4">
       <h2 id="name-security-considerations">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-3-1">TODO Security<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">TBD<a href="#section-4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-4">
+<section id="section-5">
       <h2 id="name-iana-considerations">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-4-1">This document has no IANA actions.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">TBD<a href="#section-5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sec-normative-references">
-<section id="section-5">
-      <h2 id="name-normative-references">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<div id="sec-combined-references">
+<section id="section-6">
+      <h2 id="name-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<div id="sec-normative-references">
+<section id="section-6.1">
+        <h3 id="name-normative-references">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
 </div>
-<div id="acknowledgments">
-<section id="appendix-A">
-      <h2 id="name-acknowledgments">
-<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
-      </h2>
-<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<div id="sec-informative-references">
+<section id="section-6.2">
+        <h3 id="name-informative-references">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="CacheBlend">[CacheBlend]</dt>
+        <dd>
+<span class="refTitle">"CacheBlend: Fast Large Language Model Serving for RAG with Cached Knowledge Fusion"</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://arxiv.org/abs/2405.16444">https://arxiv.org/abs/2405.16444</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="CacheGen">[CacheGen]</dt>
+        <dd>
+<span class="refTitle">"CacheGen: Fast Context Loading for Language Model Applications via KV Cache Streaming (SIGCOMM24)"</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://github.com/UChi-JCL/CacheGen">https://github.com/UChi-JCL/CacheGen</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-moq-transport">[I-D.ietf-moq-transport]</dt>
+      <dd>
+<span class="refAuthor">Curley, L.</span>, <span class="refAuthor">Pugin, K.</span>, <span class="refAuthor">Nandakumar, S.</span>, <span class="refAuthor">Vasiliev, V.</span>, and <span class="refAuthor">I. Swett</span>, <span class="refTitle">"Media over QUIC Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-moq-transport-09</span>, <time datetime="2025-03-01" class="refDate">1 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-09">https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-09</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-B">
+<section id="appendix-A">
       <h2 id="name-authors-address">
 <a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
       </h2>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Your Name Here</span></div>
-<div dir="auto" class="left"><span class="org">Your Organization Here</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Hang Shi</span></div>
+<div dir="auto" class="left"><span class="org">Huawei Technologies</span></div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:your.email@example.com" class="email">your.email@example.com</a>
+<a href="mailto:shihang9@huawei.com" class="email">shihang9@huawei.com</a>
 </div>
 </address>
 </section>
