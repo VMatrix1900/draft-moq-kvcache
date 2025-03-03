@@ -4,7 +4,7 @@ title: "KVCache over MoQT"
 abbrev: "KVCache"
 category: info
 
-docname: draft-shi-moq-kvcache-00
+docname: draft-shi-moq-kvcache-latest
 submissiontype: IETF
 number:
 date:
