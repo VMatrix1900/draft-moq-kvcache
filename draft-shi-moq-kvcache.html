@@ -6,21 +6,22 @@
 <meta content="initial-scale=1.0" name="viewport">
 <title>KVCache over MoQT</title>
 <meta content="Hang Shi" name="author">
+<meta content="Shengnan Yue" name="author">
 <meta content="
        Large language model (LLM) inference involves two stages: prefill and decode. The prefill phase processes the prompt in parallel, generating the KVCache, which is then used by the decode phase to produce tokens sequentially. KVCache can be reused if the model and prompt is the same, reducing computing cost of the prefill. However, its large size makes efficient transfer challenging. Delivering these over architectures enabled by publish/subscribe transport like MoQT, allows local nodes to cache the KVCache to be later retrieved via new subscriptions, saving the bandwidth. This document specifies the transmission of KVCache over MoQT. 
     " name="description">
-<meta content="xml2rfc 3.28.0" name="generator">
+<meta content="xml2rfc 3.28.1" name="generator">
 <meta content="AI inference, KVCache" name="keyword">
-<meta content="draft-shi-moq-kvcache-00" name="ietf.draft">
+<meta content="draft-shi-moq-kvcache-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.0
+  xml2rfc 3.28.1
     Python 3.12.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.5
+    Jinja2 3.1.6
     lxml 5.3.0
-    platformdirs 4.3.6
+    platformdirs 4.3.7
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.3
@@ -1044,11 +1045,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">KVCache</td>
-<td class="right">March 2025</td>
+<td class="right">April 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Shi</td>
-<td class="center">Expires 4 September 2025</td>
+<td class="left">Shi &amp; Yue</td>
+<td class="center">Expires 12 October 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1056,22 +1057,26 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div id="internal-metadata" class="document-information">
 <dl id="identifiers">
 <dt class="label-workgroup">Workgroup:</dt>
-<dd class="workgroup">Media over QUIC</dd>
+<dd class="workgroup">Media Over QUIC</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-shi-moq-kvcache-00</dd>
+<dd class="internet-draft">draft-shi-moq-kvcache-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-03" class="published">3 March 2025</time>
+<time datetime="2025-04-10" class="published">10 April 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-04">4 September 2025</time></dd>
-<dt class="label-authors">Author:</dt>
+<dd class="expires"><time datetime="2025-10-12">12 October 2025</time></dd>
+<dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">H. Shi</div>
 <div class="org">Huawei Technologies</div>
+</div>
+<div class="author">
+      <div class="author-name">S. Yue</div>
+<div class="org">China Mobile</div>
 </div>
 </dd>
 </dl>
@@ -1080,6 +1085,17 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">Large language model (LLM) inference involves two stages: prefill and decode. The prefill phase processes the prompt in parallel, generating the KVCache, which is then used by the decode phase to produce tokens sequentially. KVCache can be reused if the model and prompt is the same, reducing computing cost of the prefill. However, its large size makes efficient transfer challenging. Delivering these over architectures enabled by publish/subscribe transport like MoQT, allows local nodes to cache the KVCache to be later retrieved via new subscriptions, saving the bandwidth. This document specifies the transmission of KVCache over MoQT.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-discussion-venues">
+<a href="#name-discussion-venues" class="section-name selfRef">Discussion Venues</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">Discussion of this document takes place on the
+    Media Over QUIC  mailing list (moq@ietf.org),
+    which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/moq/">https://mailarchive.ietf.org/arch/browse/moq/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">Source for this draft and an issue tracker can be found at
+    <span><a href="https://github.com/VMatrix1900/draft-moq-kvcache">https://github.com/VMatrix1900/draft-moq-kvcache</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1100,7 +1116,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1156,7 +1172,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1356,7 +1372,7 @@ moq://kvcache.moq.arpa/v1/&lt;modelName&gt;/&lt;compression&gt;
 <dd class="break"></dd>
 <dt id="I-D.ietf-moq-transport">[I-D.ietf-moq-transport]</dt>
       <dd>
-<span class="refAuthor">Curley, L.</span>, <span class="refAuthor">Pugin, K.</span>, <span class="refAuthor">Nandakumar, S.</span>, <span class="refAuthor">Vasiliev, V.</span>, and <span class="refAuthor">I. Swett</span>, <span class="refTitle">"Media over QUIC Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-moq-transport-09</span>, <time datetime="2025-03-01" class="refDate">1 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-09">https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-09</a>&gt;</span>. </dd>
+<span class="refAuthor">Curley, L.</span>, <span class="refAuthor">Pugin, K.</span>, <span class="refAuthor">Nandakumar, S.</span>, <span class="refAuthor">Vasiliev, V.</span>, and <span class="refAuthor">I. Swett</span>, <span class="refTitle">"Media over QUIC Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-moq-transport-10</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-10">https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1365,8 +1381,8 @@ moq://kvcache.moq.arpa/v1/&lt;modelName&gt;/&lt;compression&gt;
 </div>
 <div id="authors-addresses">
 <section id="appendix-A">
-      <h2 id="name-authors-address">
-<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Hang Shi</span></div>
@@ -1375,6 +1391,15 @@ moq://kvcache.moq.arpa/v1/&lt;modelName&gt;/&lt;compression&gt;
 <div class="email">
 <span>Email:</span>
 <a href="mailto:shihang9@huawei.com" class="email">shihang9@huawei.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Shengnan Yue</span></div>
+<div dir="auto" class="left"><span class="org">China Mobile</span></div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:yueshengnan@chinamobile.com" class="email">yueshengnan@chinamobile.com</a>
 </div>
 </address>
 </section>

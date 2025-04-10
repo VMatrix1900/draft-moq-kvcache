@@ -2,14 +2,15 @@
 
 
 
-Media over QUIC                                                   H. Shi
+Media Over QUIC                                                   H. Shi
 Internet-Draft                                       Huawei Technologies
-Intended status: Informational                              3 March 2025
-Expires: 4 September 2025
+Intended status: Informational                                    S. Yue
+Expires: 12 October 2025                                    China Mobile
+                                                           10 April 2025
 
 
                            KVCache over MoQT
-                        draft-shi-moq-kvcache-00
+                      draft-shi-moq-kvcache-latest
 
 Abstract
 
@@ -23,6 +24,17 @@ Abstract
    MoQT, allows local nodes to cache the KVCache to be later retrieved
    via new subscriptions, saving the bandwidth.  This document specifies
    the transmission of KVCache over MoQT.
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Discussion of this document takes place on the Media Over QUIC
+   mailing list (moq@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/moq/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/VMatrix1900/draft-moq-kvcache.
 
 Status of This Memo
 
@@ -39,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2025.
+   This Internet-Draft will expire on 12 October 2025.
 
 Copyright Notice
 
@@ -65,7 +77,7 @@ Table of Contents
    6.  References
      6.1.  Normative References
      6.2.  Informative References
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction: KVCache in LLM inference
 
@@ -232,13 +244,19 @@ Table of Contents
    [I-D.ietf-moq-transport]
               Curley, L., Pugin, K., Nandakumar, S., Vasiliev, V., and
               I. Swett, "Media over QUIC Transport", Work in Progress,
-              Internet-Draft, draft-ietf-moq-transport-09, 1 March 2025,
+              Internet-Draft, draft-ietf-moq-transport-10, 3 March 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-moq-
-              transport-09>.
+              transport-10>.
 
-Author's Address
+Authors' Addresses
 
    Hang Shi
    Huawei Technologies
    China
    Email: shihang9@huawei.com
+
+
+   Shengnan Yue
+   China Mobile
+   China
+   Email: yueshengnan@chinamobile.com
