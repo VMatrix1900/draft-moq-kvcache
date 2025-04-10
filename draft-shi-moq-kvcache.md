@@ -21,6 +21,12 @@ author:
     organization: Huawei Technologies
     email: shihang9@huawei.com
     country: China
+ -
+    ins: S. Yue
+    fullname: Shengnan Yue
+    organization: China Mobile
+    email: yueshengnan@chinamobile.com
+    country: China
 
 normative:
 
